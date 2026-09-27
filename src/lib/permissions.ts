@@ -1,0 +1,31 @@
+/** Espelha `PERMISSIONS` do server (src/common/constants/permissions.constant.ts). */
+export const PERMISSIONS = {
+  MEMBERS_READ: 'members.read',
+  MEMBERS_MANAGE: 'members.manage',
+  MEMBERS_PRIVATE_DATA_READ: 'members.private_data.read',
+  PROSPECTS_READ: 'prospects.read',
+  PROSPECTS_MANAGE: 'prospects.manage',
+  PROSPECTS_APPROVE: 'prospects.approve',
+  FINANCE_READ_OWN: 'finance.read_own',
+  FINANCE_READ: 'finance.read',
+  FINANCE_MANAGE: 'finance.manage',
+  FINANCE_CLOSE_PERIOD: 'finance.close_period',
+  MEETINGS_READ: 'meetings.read',
+  MEETINGS_MANAGE: 'meetings.manage',
+  MEETINGS_MINUTES_MANAGE: 'meetings.minutes.manage',
+  EVENTS_READ: 'events.read',
+  EVENTS_MANAGE: 'events.manage',
+  CONVOYS_READ: 'convoys.read',
+  CONVOYS_MANAGE: 'convoys.manage',
+  ANNOUNCEMENTS_READ: 'announcements.read',
+  ANNOUNCEMENTS_MANAGE: 'announcements.manage',
+  DOCUMENTS_READ: 'documents.read',
+  DOCUMENTS_MANAGE: 'documents.manage',
+  CHAPTERS_MANAGE: 'chapters.manage',
+  ROLES_MANAGE: 'roles.manage',
+  SETTINGS_MANAGE: 'settings.manage',
+  SUBSCRIPTION_READ: 'subscription.read',
+  AUDIT_READ: 'audit.read',
+} as const;
+
+export type PermissionKey = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
