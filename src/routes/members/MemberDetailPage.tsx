@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { css } from 'styled-system/css';
 import { Flex, Grid } from 'styled-system/jsx';
-import { ArrowLeft, Bike, Phone, Mail, Shield, TrendingUp, UserX, Receipt } from 'lucide-react';
+import { ArrowLeft, Bike, Phone, Mail, Shield, TrendingUp, UserX, Receipt, Award } from 'lucide-react';
 import { Card } from '../../design-system/Card';
 import { Avatar } from '../../design-system/Avatar';
 import { Badge } from '../../design-system/Badge';
@@ -15,6 +15,7 @@ import { useMember, useMemberTimeline, useMemberMotorcycles, useDeactivateMember
 import { useMembershipStages } from '../../features/membership-stages/hooks';
 import { useRoles, useAssignRole, useEndRoleAssignment } from '../../features/roles/hooks';
 import { useMemberCharges } from '../../features/finance/hooks';
+import { useMemberTitles, useTitles, useAwardTitle, useRevokeTitle } from '../../features/titles/hooks';
 import { useCurrentPermissions } from '../../features/clubs/hooks';
 import { PERMISSIONS } from '../../lib/permissions';
 import { formatCentsToBRL, formatDate } from '../../lib/format';
@@ -30,6 +31,7 @@ export function MemberDetailPage() {
   const canManage = has(PERMISSIONS.MEMBERS_MANAGE);
   const canManageRoles = has(PERMISSIONS.ROLES_MANAGE);
   const canManageProspects = has(PERMISSIONS.PROSPECTS_MANAGE, PERMISSIONS.PROSPECTS_APPROVE);
+  const canManageTitles = has(PERMISSIONS.TITLES_MANAGE);
 
   const { data: member, isLoading } = useMember(id);
   const { data: timeline } = useMemberTimeline(id);
@@ -37,17 +39,23 @@ export function MemberDetailPage() {
   const { data: charges } = useMemberCharges(id);
   const { data: stages } = useMembershipStages();
   const { data: roles } = useRoles();
+  const { data: memberTitles } = useMemberTitles(id);
+  const { data: titleCatalog } = useTitles();
 
   const deactivate = useDeactivateMember();
   const changeStage = useChangeMemberStage(id);
   const assignRole = useAssignRole();
   const endAssignment = useEndRoleAssignment();
+  const awardTitle = useAwardTitle(id);
+  const revokeTitle = useRevokeTitle(id);
 
   const [confirmDeactivate, setConfirmDeactivate] = useState(false);
   const [stageDialogOpen, setStageDialogOpen] = useState(false);
   const [selectedStage, setSelectedStage] = useState('');
   const [roleDialogOpen, setRoleDialogOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState('');
+  const [titleDialogOpen, setTitleDialogOpen] = useState(false);
+  const [selectedTitle, setSelectedTitle] = useState('');
 
   if (isLoading || !member) return <Spinner />;
 
@@ -66,6 +74,11 @@ export function MemberDetailPage() {
               {member.nickname && <span className={css({ color: 'text.muted' })}>"{member.nickname}"</span>}
               <Badge tone={statusTone[member.status]}>{statusLabel[member.status]}</Badge>
               {member.isFounder && <Badge tone="brand">Fundador</Badge>}
+              {member.displayTitle && (
+                <Badge tone="warning">
+                  <Award size={12} /> {member.displayTitle.name}
+                </Badge>
+              )}
             </Flex>
             <Flex gap="4" mt="2" wrap="wrap" className={css({ color: 'text.muted', fontSize: '14px' })}>
               {member.phone && (
@@ -106,6 +119,11 @@ export function MemberDetailPage() {
                 <TrendingUp size={14} /> Mudar estágio
               </Button>
             )}
+            {canManageTitles && (
+              <Button variant="secondary" size="sm" onClick={() => setTitleDialogOpen(true)}>
+                <Award size={14} /> Atribuir título
+              </Button>
+            )}
             {canManage && member.status === 'ACTIVE' && (
               <Button variant="danger" size="sm" onClick={() => setConfirmDeactivate(true)}>
                 <UserX size={14} /> Desligar
@@ -133,6 +151,35 @@ export function MemberDetailPage() {
         </Card>
 
         <Flex direction="column" gap="5">
+          <Card>
+            <Flex align="center" justify="space-between" mb="3">
+              <h2 className={css({ textStyle: 'h3' })}>Títulos</h2>
+              <Award size={18} color="var(--colors-text-muted)" />
+            </Flex>
+            {!memberTitles || memberTitles.length === 0 ? (
+              <p className={css({ textStyle: 'bodySm', color: 'text.muted' })}>Nenhum título recebido ainda.</p>
+            ) : (
+              <Flex direction="column" gap="2">
+                {memberTitles.map((mt) => (
+                  <Flex key={mt.id} align="center" justify="space-between">
+                    <div>
+                      <p className={css({ fontSize: '14px', fontWeight: '600' })}>{mt.title.name}</p>
+                      {mt.notes && <p className={css({ textStyle: 'caption', color: 'text.muted' })}>{mt.notes}</p>}
+                    </div>
+                    {canManageTitles && (
+                      <button
+                        onClick={() => revokeTitle.mutate(mt.titleId)}
+                        className={css({ color: 'text.muted', cursor: 'pointer', fontSize: '12px', _hover: { color: 'danger' } })}
+                      >
+                        revogar
+                      </button>
+                    )}
+                  </Flex>
+                ))}
+              </Flex>
+            )}
+          </Card>
+
           <Card>
             <Flex align="center" justify="space-between" mb="3">
               <h2 className={css({ textStyle: 'h3' })}>Motocicletas</h2>
@@ -234,6 +281,38 @@ export function MemberDetailPage() {
               disabled={!selectedRole}
               loading={assignRole.isPending}
               onClick={() => assignRole.mutate({ memberId: id, roleId: selectedRole }, { onSuccess: () => setRoleDialogOpen(false) })}
+            >
+              Confirmar
+            </Button>
+          </Flex>
+        </Flex>
+      </Dialog>
+
+      <Dialog open={titleDialogOpen} onClose={() => setTitleDialogOpen(false)} title="Atribuir título">
+        <Flex direction="column" gap="4">
+          <Select value={selectedTitle} onChange={(e) => setSelectedTitle(e.target.value)}>
+            <option value="">Selecione o título</option>
+            {titleCatalog
+              ?.filter((t) => !memberTitles?.some((mt) => mt.titleId === t.id))
+              .map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+          </Select>
+          <Flex justify="flex-end" gap="2">
+            <Button variant="ghost" onClick={() => setTitleDialogOpen(false)}>
+              Cancelar
+            </Button>
+            <Button
+              disabled={!selectedTitle}
+              loading={awardTitle.isPending}
+              onClick={() =>
+                awardTitle.mutate(
+                  { titleId: selectedTitle },
+                  { onSuccess: () => { setTitleDialogOpen(false); setSelectedTitle(''); } },
+                )
+              }
             >
               Confirmar
             </Button>

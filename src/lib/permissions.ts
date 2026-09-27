@@ -22,6 +22,7 @@ export const PERMISSIONS = {
   DOCUMENTS_MANAGE: 'documents.manage',
   CHAPTERS_MANAGE: 'chapters.manage',
   ROLES_MANAGE: 'roles.manage',
+  TITLES_MANAGE: 'titles.manage',
   SETTINGS_MANAGE: 'settings.manage',
   SUBSCRIPTION_READ: 'subscription.read',
   AUDIT_READ: 'audit.read',

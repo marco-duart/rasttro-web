@@ -177,10 +177,32 @@ export interface Member {
   notes: string | null;
   memberNumber: number | null;
   isFounder: boolean;
+  displayTitleId: string | null;
   chapter?: Chapter | null;
   membershipStage?: MembershipStage | null;
   roleAssignments?: RoleAssignment[];
   motorcycles?: Motorcycle[];
+  displayTitle?: Title | null;
+  titles?: MemberTitle[];
+}
+
+export interface Title {
+  id: string;
+  clubId: string;
+  name: string;
+  description: string | null;
+  color: string | null;
+  _count?: { memberTitles: number };
+}
+
+export interface MemberTitle {
+  id: string;
+  memberId: string;
+  titleId: string;
+  awardedAt: string;
+  notes: string | null;
+  title: Title;
+  awardedBy?: { id: string; fullName: string; nickname: string | null } | null;
 }
 
 export interface MemberSummary {
@@ -191,7 +213,7 @@ export interface MemberSummary {
 }
 
 export interface TimelineEntry {
-  type: 'stage' | 'role' | 'role_end' | 'meeting' | 'event' | 'payment';
+  type: 'stage' | 'role' | 'role_end' | 'meeting' | 'event' | 'payment' | 'title';
   date: string;
   title: string;
   description?: string;
@@ -424,6 +446,7 @@ export interface MembershipCard {
   club: { name: string; logoUrl: string | null; primaryColor: string | null };
   stage: string | null;
   roles: string[];
+  displayTitle: string | null;
   qrDataUrl: string;
   verifyUrl: string;
 }

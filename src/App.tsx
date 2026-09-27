@@ -14,6 +14,7 @@ import { MembersListPage } from './routes/members/MembersListPage';
 import { MemberDetailPage } from './routes/members/MemberDetailPage';
 import { ProspectsPage } from './routes/members/ProspectsPage';
 import { RolesPage } from './routes/roles/RolesPage';
+import { TitlesPage } from './routes/titles/TitlesPage';
 import { ChaptersPage } from './routes/chapters/ChaptersPage';
 import { AgendaPage } from './routes/agenda/AgendaPage';
 import { MeetingsListPage } from './routes/meetings/MeetingsListPage';
@@ -50,6 +51,7 @@ function App() {
               <Route path="/membros/:id" element={<MemberDetailPage />} />
               <Route path="/prospects" element={<ProspectsPage />} />
               <Route path="/cargos" element={<RolesPage />} />
+              <Route path="/titulos" element={<TitlesPage />} />
               <Route path="/regionais" element={<ChaptersPage />} />
               <Route path="/agenda" element={<AgendaPage />} />
               <Route path="/reunioes" element={<MeetingsListPage />} />

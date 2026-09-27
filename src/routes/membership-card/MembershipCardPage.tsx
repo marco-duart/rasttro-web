@@ -1,5 +1,6 @@
 import { css } from 'styled-system/css';
 import { Center } from 'styled-system/jsx';
+import { Award } from 'lucide-react';
 import { PageHeader } from '../../design-system/PageHeader';
 import { Card } from '../../design-system/Card';
 import { Badge } from '../../design-system/Badge';
@@ -32,6 +33,11 @@ export function MembershipCardPage() {
           <h1 className={css({ textStyle: 'h2' })}>{card.member.fullName}</h1>
           {card.member.nickname && <p className={css({ color: 'text.muted' })}>"{card.member.nickname}"</p>}
           <div className={css({ display: 'flex', justifyContent: 'center', gap: '2', mt: '2', flexWrap: 'wrap' })}>
+            {card.displayTitle && (
+              <Badge tone="warning">
+                <Award size={12} /> {card.displayTitle}
+              </Badge>
+            )}
             {card.stage && <Badge tone="brand">{card.stage}</Badge>}
             {card.roles.map((r) => (
               <Badge key={r} tone="neutral">
