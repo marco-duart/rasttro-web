@@ -6,7 +6,6 @@ import { formatDate } from '../lib/format';
 
 export function SubscriptionBanner() {
   const { data: club } = useCurrentClub();
-  // Lazy init: leitura de "agora" só na montagem, não a cada render (regra de pureza do React).
   const [now] = useState(() => Date.now());
   const subscription = club?.subscription;
   if (!subscription) return null;

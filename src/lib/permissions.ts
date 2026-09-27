@@ -1,4 +1,3 @@
-/** Espelha `PERMISSIONS` do server (src/common/constants/permissions.constant.ts). */
 export const PERMISSIONS = {
   MEMBERS_READ: 'members.read',
   MEMBERS_MANAGE: 'members.manage',

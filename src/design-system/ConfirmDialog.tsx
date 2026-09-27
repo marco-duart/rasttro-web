@@ -12,7 +12,6 @@ interface ConfirmDialogProps {
   onClose: () => void;
 }
 
-/** Confirmação obrigatória para ações sensíveis (seção 13). */
 export function ConfirmDialog({
   open,
   title,

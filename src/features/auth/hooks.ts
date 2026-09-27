@@ -52,7 +52,6 @@ export function useMyClubs() {
   return useQuery({ queryKey: ['clubs', 'mine'], queryFn: authApi.myClubs });
 }
 
-/** Restaura a sessão a partir do refresh token salvo, ao abrir o app. */
 export function useBootstrapSession() {
   const isBootstrapping = useAuthStore((s) => s.isBootstrapping);
   const accessToken = useAuthStore((s) => s.accessToken);

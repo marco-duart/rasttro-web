@@ -22,7 +22,6 @@ export function AgendaPage() {
   const { data: convoys, isLoading: loadingConvoys } = useConvoys(true);
 
   const isLoading = loadingMeetings || loadingEvents || loadingConvoys;
-  // Lazy init: leitura de "agora" só na montagem, não a cada render (regra de pureza do React).
   const [now] = useState(() => Date.now());
 
   const entries: AgendaEntry[] = [

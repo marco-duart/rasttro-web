@@ -24,7 +24,6 @@ export interface NavItem {
   label: string;
   to: string;
   icon: LucideIcon;
-  /** Se definido, o item só aparece quando o membro tem uma destas permissões. */
   permission?: string[];
 }
 

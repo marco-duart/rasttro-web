@@ -34,9 +34,6 @@ export function RoleFormDialog({ open, onClose, role }: RoleFormDialogProps) {
   const update = useUpdateRole();
   const isEditing = Boolean(role);
 
-  // O pai (RolesPage) remonta este componente a cada abertura (sai de `undefined`
-  // para um valor e volta), então o estado inicial abaixo já nasce correto —
-  // sem precisar de um efeito para sincronizar com a prop `role`.
   const { register, handleSubmit } = useForm<{ name: string; description: string; color: string; rank: number }>({
     defaultValues: role
       ? { name: role.name, description: role.description ?? '', color: role.color ?? '#D97721', rank: role.rank }

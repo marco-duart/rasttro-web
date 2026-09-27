@@ -1,13 +1,3 @@
-/**
- * Tipos de resposta da API, escritos à mão a partir do schema Prisma do
- * server (espelham exatamente o JSON que a API devolve — datas como
- * string ISO). Os DTOs de *request* e os schemas Zod continuam vindo do
- * Kubb (`src/api/generated`), gerados a partir do OpenAPI; só as respostas
- * são mantidas aqui porque os controllers ainda não anotam `@ApiOkResponse`
- * em cada rota (o Nest/Swagger então não consegue inferir o shape da
- * resposta e o Kubb gera `unknown`). Ver nota em `kubb.config.ts`.
- */
-
 export type PermissionScope = 'SELF' | 'CHAPTER' | 'CLUB';
 export type ClubStatus = 'ACTIVE' | 'SUSPENDED' | 'CANCELED';
 export type SubscriptionStatus = 'TRIALING' | 'ACTIVE' | 'PAST_DUE' | 'CANCELED';

@@ -1,18 +1,10 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { useAuthStore, getRefreshToken, saveRefreshToken, clearRefreshToken } from '../stores/auth.store';
 import { useClubStore } from '../stores/club.store';
+import { env } from '../config/env';
 
-/**
- * Instância única do axios usada por TODO o client gerado pelo Kubb
- * (`src/api/generated`). Centraliza:
- * - anexar o access token e o header `x-club-id`;
- * - renovar a sessão automaticamente em um 401 (refresh token, com fila
- *   para não disparar múltiplos refreshes em paralelo);
- * - deixar o 402 (assinatura inativa) passar adiante para quem chamou
- *   tratar (banner/redirecionamento), sem tentar "consertar" sozinho.
- */
 export const http = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3000/api/v1',
+  baseURL: `${env.VITE_API_URL}/api/v1`,
 });
 
 http.interceptors.request.use((config) => {

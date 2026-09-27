@@ -106,20 +106,12 @@ const card = defineRecipe({
   },
 });
 
-/**
- * Tokens do Rasttro (seção 9/10 do documento de produto).
- *
- * Tema principal é o escuro "Asphalt" — a maioria dos usuários de teste
- * são roqueiros em moto clube, então o app abre no escuro por padrão.
- * "Road Paper" (claro) é o tema secundário, disponível no toggle.
- */
 export default defineConfig({
   preflight: true,
   include: ['./src/**/*.{js,jsx,ts,tsx}'],
   exclude: [],
   jsxFramework: 'react',
 
-  // Estratégia explícita: <html data-theme="dark|light">, default = dark.
   conditions: {
     light: '[data-theme=light] &',
     dark: '[data-theme=dark] &',
@@ -133,10 +125,10 @@ export default defineConfig({
             50: { value: '#FBEFE2' },
             100: { value: '#F5DAB9' },
             200: { value: '#EAB584' },
-            300: { value: '#EA8A32' }, // brand-hover (dark)
-            400: { value: '#D97721' }, // brand (dark)
-            500: { value: '#B85E19' }, // brand (light)
-            600: { value: '#984A13' }, // brand-hover (light)
+            300: { value: '#EA8A32' },
+            400: { value: '#D97721' },
+            500: { value: '#B85E19' },
+            600: { value: '#984A13' },
             700: { value: '#3B2414' }, // brand-soft (dark)
           },
         },

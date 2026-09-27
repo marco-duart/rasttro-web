@@ -10,7 +10,6 @@ interface AuthUser {
 interface AuthState {
   accessToken: string | null;
   user: AuthUser | null;
-  /** true enquanto tentamos restaurar a sessão a partir do refresh token salvo. */
   isBootstrapping: boolean;
   setSession: (accessToken: string, user?: AuthUser | null) => void;
   setUser: (user: AuthUser) => void;
