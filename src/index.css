@@ -1,0 +1,54 @@
+@layer reset, base, tokens, recipes, utilities;
+
+@import '@fontsource-variable/inter';
+@import '@fontsource/barlow-condensed/600.css';
+@import '@fontsource/barlow-condensed/700.css';
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--colors-canvas);
+    color: var(--colors-text);
+    font-family: var(--fonts-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  #root {
+    min-height: 100dvh;
+  }
+
+  ::selection {
+    background: var(--colors-brand);
+    color: var(--colors-text-onBrand);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--colors-brand);
+    outline-offset: 2px;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  button {
+    font-family: inherit;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
