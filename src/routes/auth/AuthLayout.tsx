@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { css } from 'styled-system/css';
 import { Center } from 'styled-system/jsx';
-import { Logo } from '../../design-system/Logo';
+import { AuthBrandMark } from '../../design-system/AuthBrandMark';
 import { Card } from '../../design-system/Card';
 
 interface AuthLayoutProps {
@@ -23,8 +23,8 @@ export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProp
       })}
     >
       <div className={css({ width: '100%', maxW: '420px' })}>
-        <div className={css({ display: 'flex', justifyContent: 'center', mb: '8' })}>
-          <Logo size={40} />
+        <div className={css({ display: 'flex', justifyContent: 'center', mb: '9' })}>
+          <AuthBrandMark />
         </div>
         <Card className={css({ p: '7' })}>
           <h1 className={css({ textStyle: 'h2', mb: '1' })}>{title}</h1>
