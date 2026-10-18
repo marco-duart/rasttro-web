@@ -18,6 +18,7 @@ export type ConvoyRole = 'CAPTAIN' | 'REAR_GUARD' | 'ASSISTANT' | 'ROAD_SUPPORT'
 export type ConvoyParticipantStatus = 'CONFIRMED' | 'CHECKED_IN' | 'ARRIVED' | 'NO_SHOW' | 'CANCELLED';
 export type AnnouncementAudience = 'GENERAL' | 'BOARD' | 'REGIONAL' | 'PROSPECTS' | 'EVENT_PARTICIPANTS';
 export type AnnouncementPriority = 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
+export type PixKeyType = 'CPF' | 'CNPJ' | 'EMAIL' | 'PHONE' | 'EVP';
 export type InviteStatus = 'PENDING' | 'ACCEPTED' | 'EXPIRED' | 'REVOKED';
 
 export interface PaginationMeta {
@@ -62,7 +63,14 @@ export interface Club {
   legalName: string | null;
   slug: string;
   logoUrl: string | null;
+  logoPublicId: string | null;
   coverUrl: string | null;
+  coverPublicId: string | null;
+  pixKey: string | null;
+  pixKeyType: PixKeyType | null;
+  pixRecipientName: string | null;
+  pixCity: string | null;
+  paymentInstructions: string | null;
   primaryColor: string | null;
   secondaryColor: string | null;
   foundedAt: string | null;
@@ -253,6 +261,7 @@ export interface Charge {
   cancelledReason: string | null;
   notes: string | null;
   member?: MemberSummary;
+  lastReminderAt?: string | null;
 }
 
 export interface FinancialTransaction {

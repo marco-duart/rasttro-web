@@ -7,20 +7,22 @@ import { PageHeader } from '../../design-system/PageHeader';
 import { Card } from '../../design-system/Card';
 import { Field } from '../../design-system/Field';
 import { Input } from '../../design-system/Input';
+import { Select } from '../../design-system/Select';
 import { Textarea } from '../../design-system/Textarea';
 import { Button } from '../../design-system/Button';
 import { Badge } from '../../design-system/Badge';
 import { Dialog } from '../../design-system/Dialog';
 import { Spinner } from '../../design-system/Spinner';
-import { useCurrentClub, useUpdateClub } from '../../features/clubs/hooks';
+import { ImageUploadField } from '../../design-system/ImageUploadField';
+import { useBrandingImage, useCurrentClub, useCurrentPermissions, useUpdateClub, useUpdatePaymentSettings } from '../../features/clubs/hooks';
 import { useMembershipStages, useCreateStage, useRemoveStage } from '../../features/membership-stages/hooks';
-import type { Club } from '../../api/types';
+import { PERMISSIONS } from '../../lib/permissions';
+import type { Club, PixKeyType } from '../../api/types';
 
 interface ClubFormValues {
   name: string;
   legalName?: string;
   description?: string;
-  logoUrl?: string;
   primaryColor?: string;
   email?: string;
   phone?: string;
@@ -35,7 +37,6 @@ function ClubBrandingForm({ club }: { club: Club }) {
       name: club.name,
       legalName: club.legalName ?? '',
       description: club.description ?? '',
-      logoUrl: club.logoUrl ?? '',
       primaryColor: club.primaryColor ?? '#D97721',
       email: club.email ?? '',
       phone: club.phone ?? '',
@@ -57,10 +58,7 @@ function ClubBrandingForm({ club }: { club: Club }) {
         <Field label="Descrição">
           <Textarea {...register('description')} rows={3} />
         </Field>
-        <Grid columns={{ base: 1, md: 3 }} gap="4">
-          <Field label="URL da logo/brasão" hint="Link de uma imagem publicada.">
-            <Input {...register('logoUrl')} placeholder="https://..." />
-          </Field>
+        <Grid columns={{ base: 1, md: 2 }} gap="4">
           <Field label="Cor primária">
             <Input type="color" {...register('primaryColor')} className={css({ p: '1', h: '44px' })} />
           </Field>
@@ -74,6 +72,125 @@ function ClubBrandingForm({ club }: { club: Club }) {
         <Flex justify="flex-end">
           <Button type="submit" loading={update.isPending}>
             Salvar
+          </Button>
+        </Flex>
+      </form>
+    </Card>
+  );
+}
+
+function ClubImagesCard({ club }: { club: Club }) {
+  const logo = useBrandingImage('logo');
+  const cover = useBrandingImage('cover');
+  return (
+    <Card>
+      <h2 className={css({ textStyle: 'h3', mb: '4' })}>Brasão e capa</h2>
+      <Flex direction="column" gap="5">
+        <Field label="Logo / brasão" hint="Aparece nos e-mails, no app e na carteirinha. JPG, PNG ou WebP até 2 MB.">
+          <ImageUploadField
+            name={club.name}
+            currentUrl={club.logoUrl}
+            purpose="club_logo"
+            onUploaded={(publicId) => logo.set.mutateAsync(publicId)}
+            onRemove={() => logo.remove.mutateAsync()}
+          />
+        </Field>
+        <Field label="Capa" hint="Imagem larga do clube. Até 5 MB.">
+          <ImageUploadField
+            name={club.name}
+            currentUrl={club.coverUrl}
+            purpose="club_cover"
+            shape="wide"
+            onUploaded={(publicId) => cover.set.mutateAsync(publicId)}
+            onRemove={() => cover.remove.mutateAsync()}
+          />
+        </Field>
+      </Flex>
+    </Card>
+  );
+}
+
+const PIX_LABEL: Record<PixKeyType, string> = {
+  CPF: 'CPF',
+  CNPJ: 'CNPJ',
+  EMAIL: 'E-mail',
+  PHONE: 'Telefone',
+  EVP: 'Chave aleatória',
+};
+
+interface PaymentFormValues {
+  pixKeyType: PixKeyType;
+  pixKey: string;
+  pixRecipientName: string;
+  pixCity: string;
+  paymentInstructions: string;
+}
+
+function PaymentSettingsCard({ club }: { club: Club }) {
+  const update = useUpdatePaymentSettings();
+  const { register, handleSubmit, reset, watch } = useForm<PaymentFormValues>();
+
+  useEffect(() => {
+    reset({
+      pixKeyType: club.pixKeyType ?? 'EMAIL',
+      pixKey: club.pixKey ?? '',
+      pixRecipientName: club.pixRecipientName ?? club.name,
+      pixCity: club.pixCity ?? '',
+      paymentInstructions: club.paymentInstructions ?? '',
+    });
+  }, [club, reset]);
+
+  const values = watch();
+
+  return (
+    <Card>
+      <h2 className={css({ textStyle: 'h3', mb: '1' })}>Pagamentos (PIX)</h2>
+      <p className={css({ textStyle: 'bodySm', color: 'text.muted', mb: '4' })}>
+        Os membros veem estes dados em "Como pagar" no app. Qualquer alteração na chave avisa a diretoria por e-mail.
+      </p>
+      <form
+        onSubmit={handleSubmit((form) =>
+          update.mutate({
+            pixKeyType: form.pixKeyType,
+            pixKey: form.pixKey.trim() || null,
+            pixRecipientName: form.pixRecipientName,
+            pixCity: form.pixCity,
+            paymentInstructions: form.paymentInstructions.trim() || null,
+          }),
+        )}
+        className={css({ display: 'flex', flexDirection: 'column', gap: '4' })}
+      >
+        <Grid columns={{ base: 1, md: 2 }} gap="4">
+          <Field label="Tipo da chave">
+            <Select {...register('pixKeyType')}>
+              {(Object.keys(PIX_LABEL) as PixKeyType[]).map((type) => (
+                <option key={type} value={type}>
+                  {PIX_LABEL[type]}
+                </option>
+              ))}
+            </Select>
+          </Field>
+          <Field label="Chave PIX" hint="Deixe vazio e salve para remover a chave.">
+            <Input {...register('pixKey')} />
+          </Field>
+          <Field label="Nome do favorecido">
+            <Input {...register('pixRecipientName')} maxLength={80} />
+          </Field>
+          <Field label="Cidade do favorecido">
+            <Input {...register('pixCity')} maxLength={60} />
+          </Field>
+        </Grid>
+        <Field label="Instruções de pagamento" hint="Ex.: envie o comprovante ao tesoureiro.">
+          <Textarea rows={3} {...register('paymentInstructions')} />
+        </Field>
+        {values.pixKey && (
+          <div className={css({ p: '3', borderRadius: 'md', bg: 'surface.elevated', textStyle: 'bodySm' })}>
+            <strong>Como o membro vê:</strong> pagar para {values.pixRecipientName || '—'} ({values.pixCity || '—'}) — {PIX_LABEL[values.pixKeyType]}: {values.pixKey}
+          </div>
+        )}
+        <Flex justify="flex-end">
+          <Button type="submit" loading={update.isPending}>
+            Salvar pagamentos
           </Button>
         </Flex>
       </form>
@@ -156,6 +273,7 @@ function StagesSection() {
 
 export function SettingsPage() {
   const { data: club, isLoading } = useCurrentClub();
+  const { has } = useCurrentPermissions();
 
   if (isLoading || !club) return <Spinner />;
 
@@ -164,6 +282,8 @@ export function SettingsPage() {
       <PageHeader title="Configurações do clube" description="Identidade visual e estágios de progressão dos membros." />
       <Flex direction="column" gap="5">
         <ClubBrandingForm club={club} />
+        <ClubImagesCard club={club} />
+        {has(PERMISSIONS.FINANCE_MANAGE) && <PaymentSettingsCard club={club} />}
         <StagesSection />
       </Flex>
     </div>
