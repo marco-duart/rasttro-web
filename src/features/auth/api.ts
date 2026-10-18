@@ -19,6 +19,9 @@ export const authApi = {
   refresh: (refreshToken: string) =>
     http.post<AuthTokenResponse>('/auth/refresh', { refreshToken }).then((r) => r.data),
   logout: (refreshToken: string) => http.post('/auth/logout', { refreshToken }).then((r) => r.data),
+  forgotPassword: (email: string) => http.post<{ message: string }>('/auth/forgot-password', { email }).then((r) => r.data),
+  resetPassword: (token: string, newPassword: string) =>
+    http.post('/auth/reset-password', { token, newPassword }).then((r) => r.data),
   me: () => http.get<AuthUser>('/auth/me').then((r) => r.data),
   changePassword: (currentPassword: string, newPassword: string) =>
     http.post('/auth/change-password', { currentPassword, newPassword }).then((r) => r.data),

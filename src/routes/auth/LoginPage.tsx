@@ -46,6 +46,9 @@ export function LoginPage() {
         <Button type="submit" fullWidth loading={login.isPending}>
           Entrar
         </Button>
+        <Link to="/esqueci-senha" className={css({ textStyle: 'bodySm', color: 'text.muted', textAlign: 'center', _hover: { color: 'brand' } })}>
+          Esqueci minha senha
+        </Link>
       </form>
       <p className={css({ textStyle: 'bodySm', color: 'text.muted', mt: '5', textAlign: 'center' })}>
         Ainda não tem clube cadastrado?{' '}
