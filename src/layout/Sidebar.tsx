@@ -3,6 +3,7 @@ import { css, cx } from 'styled-system/css';
 import { Box } from 'styled-system/jsx';
 import { Logo } from '../design-system/Logo';
 import { NAV_GROUPS } from './nav';
+import { useAuthStore } from '../stores/auth.store';
 import { useCurrentPermissions } from '../features/clubs/hooks';
 
 const linkClass = css({
@@ -27,6 +28,7 @@ const activeLinkClass = css({
 
 export function Sidebar() {
   const { has, isLoading } = useCurrentPermissions();
+  const isSuperAdmin = useAuthStore((state) => state.user?.isSuperAdmin);
 
   return (
     <Box
@@ -48,7 +50,9 @@ export function Sidebar() {
       </div>
       <div className={css({ flex: 1, px: '3', display: 'flex', flexDirection: 'column', gap: '5', pb: '4' })}>
         {NAV_GROUPS.map((group, idx) => {
-          const items = group.items.filter((item) => !item.permission || isLoading || has(...item.permission));
+          const items = group.items.filter((item) =>
+            item.superAdminOnly ? Boolean(isSuperAdmin) : !item.permission || isLoading || has(...item.permission),
+          );
           if (items.length === 0) return null;
           return (
             <div key={idx}>

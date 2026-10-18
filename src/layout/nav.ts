@@ -18,6 +18,8 @@ import {
   Settings,
   ScrollText,
   IdCard,
+  Mail,
+  MailCheck,
 } from 'lucide-react';
 import { PERMISSIONS } from '../lib/permissions';
 
@@ -26,6 +28,7 @@ export interface NavItem {
   to: string;
   icon: LucideIcon;
   permission?: string[];
+  superAdminOnly?: boolean;
 }
 
 export interface NavGroup {
@@ -42,6 +45,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: 'Pessoas',
     items: [
       { label: 'Membros', to: '/membros', icon: Users, permission: [PERMISSIONS.MEMBERS_READ] },
+      { label: 'Convites', to: '/convites', icon: Mail, permission: [PERMISSIONS.MEMBERS_MANAGE] },
       { label: 'Prospects', to: '/prospects', icon: UserPlus, permission: [PERMISSIONS.PROSPECTS_READ] },
       { label: 'Cargos e permissões', to: '/cargos', icon: Shield, permission: [PERMISSIONS.ROLES_MANAGE] },
       { label: 'Títulos', to: '/titulos', icon: Award, permission: [PERMISSIONS.TITLES_MANAGE] },
@@ -80,5 +84,9 @@ export const NAV_GROUPS: NavGroup[] = [
       { label: 'Configurações', to: '/configuracoes', icon: Settings, permission: [PERMISSIONS.SETTINGS_MANAGE] },
       { label: 'Auditoria', to: '/auditoria', icon: ScrollText, permission: [PERMISSIONS.AUDIT_READ] },
     ],
+  },
+  {
+    label: 'Plataforma',
+    items: [{ label: 'E-mails enviados', to: '/admin/emails', icon: MailCheck, superAdminOnly: true }],
   },
 ];

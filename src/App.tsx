@@ -4,6 +4,14 @@ import { Toaster } from './design-system/Toaster';
 import { LoginPage } from './routes/auth/LoginPage';
 import { SignupClubPage } from './routes/auth/SignupClubPage';
 import { SelectClubPage } from './routes/auth/SelectClubPage';
+import { ForgotPasswordPage } from './routes/auth/ForgotPasswordPage';
+import { ResetPasswordPage } from './routes/auth/ResetPasswordPage';
+import { AdminEmailsPage } from './routes/admin/AdminEmailsPage';
+import { CheckInModePage } from './routes/check-in/CheckInModePage';
+import { CheckInScanPage } from './routes/check-in/CheckInScanPage';
+import { EmergencySheetPage } from './routes/convoys/EmergencySheetPage';
+import { EmailPreferencesPage } from './routes/auth/EmailPreferencesPage';
+import { InvitesPage } from './routes/invites/InvitesPage';
 import { AcceptInvitePage } from './routes/auth/AcceptInvitePage';
 import { RequireAuth } from './routes/RequireAuth';
 import { RequireClub } from './routes/RequireClub';
@@ -38,6 +46,9 @@ function App() {
     <>
       <Routes>
         <Route path="/entrar" element={<LoginPage />} />
+        <Route path="/esqueci-senha" element={<ForgotPasswordPage />} />
+        <Route path="/redefinir-senha" element={<ResetPasswordPage />} />
+        <Route path="/preferencias-email" element={<EmailPreferencesPage />} />
         <Route path="/criar-clube" element={<SignupClubPage />} />
         <Route path="/convite/:code" element={<AcceptInvitePage />} />
 
@@ -45,10 +56,15 @@ function App() {
           <Route path="/selecionar-clube" element={<SelectClubPage />} />
 
           <Route element={<RequireClub />}>
+            <Route path="/check-in" element={<CheckInScanPage />} />
+            <Route path="/check-in-modo/:type/:id" element={<CheckInModePage />} />
+            <Route path="/comboios/:id/emergencia" element={<EmergencySheetPage />} />
             <Route element={<AppShell />}>
               <Route path="/" element={<DashboardPage />} />
               <Route path="/membros" element={<MembersListPage />} />
               <Route path="/membros/:id" element={<MemberDetailPage />} />
+              <Route path="/admin/emails" element={<AdminEmailsPage />} />
+              <Route path="/convites" element={<InvitesPage />} />
               <Route path="/prospects" element={<ProspectsPage />} />
               <Route path="/cargos" element={<RolesPage />} />
               <Route path="/titulos" element={<TitlesPage />} />
