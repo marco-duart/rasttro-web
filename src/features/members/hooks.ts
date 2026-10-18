@@ -90,3 +90,12 @@ export function useChangeMemberStage(id: string) {
     },
   });
 }
+
+export function useMemberPhoto(id: string) {
+  const queryClient = useQueryClient();
+  const refresh = () => queryClient.invalidateQueries({ queryKey: ['members'] });
+  return {
+    set: useMutation({ mutationFn: (publicId: string) => membersApi.setPhoto(id, publicId), onSuccess: refresh }),
+    remove: useMutation({ mutationFn: () => membersApi.removePhoto(id), onSuccess: refresh }),
+  };
+}

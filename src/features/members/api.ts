@@ -27,6 +27,8 @@ export const membersApi = {
   deactivate: (id: string, reason?: string) => http.delete<Member>(`/members/${id}`, { data: { reason } }).then((r) => r.data),
   changeStage: (id: string, input: { stageId: string; sponsorMemberId?: string; notes?: string }) =>
     http.post<Member>(`/members/${id}/stage`, input).then((r) => r.data),
+  setPhoto: (id: string, publicId: string) => http.put<Member>(`/members/${id}/photo`, { publicId }).then((r) => r.data),
+  removePhoto: (id: string) => http.delete<Member>(`/members/${id}/photo`).then((r) => r.data),
   timeline: (id: string) => http.get<TimelineEntry[]>(`/members/${id}/timeline`).then((r) => r.data),
   requirements: (id: string) => http.get<MembershipRequirement[]>(`/members/${id}/requirements`).then((r) => r.data),
   updateRequirementProgress: (id: string, requirementId: string, input: { completedCount?: number; completedAt?: string | null }) =>

@@ -11,7 +11,8 @@ import { Spinner } from '../../design-system/Spinner';
 import { Select } from '../../design-system/Select';
 import { ConfirmDialog } from '../../design-system/ConfirmDialog';
 import { Dialog } from '../../design-system/Dialog';
-import { useMember, useMemberTimeline, useMemberMotorcycles, useDeactivateMember, useChangeMemberStage } from '../../features/members/hooks';
+import { ImageUploadField } from '../../design-system/ImageUploadField';
+import { useMember, useMemberPhoto, useMemberTimeline, useMemberMotorcycles, useDeactivateMember, useChangeMemberStage } from '../../features/members/hooks';
 import { useMembershipStages } from '../../features/membership-stages/hooks';
 import { useRoles, useAssignRole, useEndRoleAssignment } from '../../features/roles/hooks';
 import { useMemberCharges } from '../../features/finance/hooks';
@@ -34,6 +35,7 @@ export function MemberDetailPage() {
   const canManageTitles = has(PERMISSIONS.TITLES_MANAGE);
 
   const { data: member, isLoading } = useMember(id);
+  const photo = useMemberPhoto(id ?? '');
   const { data: timeline } = useMemberTimeline(id);
   const { data: motorcycles } = useMemberMotorcycles(id);
   const { data: charges } = useMemberCharges(id);
@@ -67,7 +69,18 @@ export function MemberDetailPage() {
 
       <Card className={css({ mb: '5' })}>
         <Flex gap="4" align="flex-start" wrap="wrap">
-          <Avatar name={member.fullName} photoUrl={member.photoUrl} size={64} />
+          {canManage ? (
+            <ImageUploadField
+              name={member.fullName}
+              currentUrl={member.photoUrl}
+              purpose="member_avatar"
+              targetId={member.id}
+              onUploaded={(publicId) => photo.set.mutateAsync(publicId)}
+              onRemove={() => photo.remove.mutateAsync()}
+            />
+          ) : (
+            <Avatar name={member.fullName} photoUrl={member.photoUrl} size={64} />
+          )}
           <div className={css({ flex: 1, minW: '200px' })}>
             <Flex align="center" gap="2" wrap="wrap">
               <h1 className={css({ textStyle: 'h2' })}>{member.fullName}</h1>
