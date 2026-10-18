@@ -79,7 +79,7 @@ export function ChargesPage() {
           <table className={css({ width: '100%', borderCollapse: 'collapse' })}>
             <thead>
               <tr className={css({ borderBottom: '1px solid', borderColor: 'border' })}>
-                {['Membro', 'Referência', 'Valor', 'Vencimento', 'Status', canManage ? 'Ações' : ''].map((h) => (
+                {['Membro', 'Referência', 'Valor', 'Vencimento', 'Status', 'Último lembrete', canManage ? 'Ações' : ''].map((h) => (
                   <th key={h} className={css({ textAlign: 'left', p: '3', textStyle: 'label', color: 'text.muted' })}>
                     {h}
                   </th>
@@ -100,6 +100,9 @@ export function ChargesPage() {
                   <td className={css({ p: '3', fontSize: '14px', color: 'text.muted' })}>{formatDate(charge.dueDate)}</td>
                   <td className={css({ p: '3' })}>
                     <Badge tone={statusTone[charge.status]}>{statusLabel[charge.status]}</Badge>
+                  </td>
+                  <td className={css({ p: '3', fontSize: '13px', color: 'text.muted' })}>
+                    {charge.lastReminderAt ? formatDate(charge.lastReminderAt) : '—'}
                   </td>
                   <td className={css({ p: '3' })}>
                     {canManage && (charge.status === 'PENDING' || charge.status === 'OVERDUE') && (
