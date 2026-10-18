@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { css } from 'styled-system/css';
 import { Flex, Grid } from 'styled-system/jsx';
-import { ArrowLeft, Navigation, Flag, Shield, Phone, Plus } from 'lucide-react';
+import { ArrowLeft, FileHeart, Navigation, Flag, Shield, Phone, Plus, QrCode } from 'lucide-react';
 import { PageHeader } from '../../design-system/PageHeader';
 import { Card } from '../../design-system/Card';
 import { Badge } from '../../design-system/Badge';
@@ -62,6 +62,16 @@ export function ConvoyDetailPage() {
         description={`Saída ${formatDateTime(convoy.departureAt)}${convoy.destination ? ` → ${convoy.destination}` : ''}`}
         actions={
           <Flex gap="2">
+            {canManage && (
+              <Button variant="secondary" onClick={() => navigate(`/check-in-modo/convoy/${convoy.id}`)}>
+                <QrCode size={16} /> Modo check-in
+              </Button>
+            )}
+            {canManage && (
+              <Button variant="secondary" onClick={() => navigate(`/comboios/${convoy.id}/emergencia`)}>
+                <FileHeart size={16} /> Ficha de emergência
+              </Button>
+            )}
             {convoy.routeUrl && (
               <a href={convoy.routeUrl} target="_blank" rel="noreferrer">
                 <Button variant="secondary">

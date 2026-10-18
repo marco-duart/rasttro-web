@@ -93,3 +93,13 @@ export function useUpdateParticipant(convoyId: string) {
     onSuccess: invalidate,
   });
 }
+
+export function useEmergencySheet(id: string, enabled: boolean) {
+  return useQuery({
+    queryKey: ['convoys', 'emergency-sheet', id],
+    queryFn: () => convoysApi.emergencySheet(id),
+    enabled,
+    staleTime: 0,
+    gcTime: 0,
+  });
+}

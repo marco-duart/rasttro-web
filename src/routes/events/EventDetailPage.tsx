@@ -1,7 +1,7 @@
 import { useParams, useNavigate, Link } from 'react-router';
 import { css } from 'styled-system/css';
 import { Flex, Grid } from 'styled-system/jsx';
-import { ArrowLeft, MapPin, Bike } from 'lucide-react';
+import { ArrowLeft, MapPin, Bike, QrCode } from 'lucide-react';
 import { PageHeader } from '../../design-system/PageHeader';
 import { Card } from '../../design-system/Card';
 import { Badge } from '../../design-system/Badge';
@@ -9,6 +9,8 @@ import { Button } from '../../design-system/Button';
 import { Avatar } from '../../design-system/Avatar';
 import { Spinner } from '../../design-system/Spinner';
 import { useEvent, useRsvpEvent } from '../../features/events/hooks';
+import { useCurrentPermissions } from '../../features/clubs/hooks';
+import { PERMISSIONS } from '../../lib/permissions';
 import { formatDateTime } from '../../lib/format';
 import { eventTypeLabel } from '../../features/events/constants';
 import type { RsvpStatus } from '../../api/types';
@@ -17,6 +19,7 @@ const rsvpLabel: Record<RsvpStatus, string> = { CONFIRMED: 'Vou', MAYBE: 'Talvez
 
 export function EventDetailPage() {
   const { id = '' } = useParams();
+  const { has } = useCurrentPermissions();
   const navigate = useNavigate();
   const { data: event, isLoading } = useEvent(id);
   const rsvp = useRsvpEvent(id);
@@ -32,7 +35,17 @@ export function EventDetailPage() {
         <ArrowLeft size={16} /> Voltar aos eventos
       </button>
 
-      <PageHeader title={event.title} description={formatDateTime(event.startsAt)} />
+      <PageHeader
+        title={event.title}
+        description={formatDateTime(event.startsAt)}
+        actions={
+          has(PERMISSIONS.EVENTS_MANAGE) && (
+            <Button onClick={() => navigate(`/check-in-modo/event/${event.id}`)}>
+              <QrCode size={16} /> Modo check-in
+            </Button>
+          )
+        }
+      />
 
       <Grid columns={{ base: 1, lg: 2 }} gap="5">
         <Card>

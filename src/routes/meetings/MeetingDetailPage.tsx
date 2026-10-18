@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { css } from 'styled-system/css';
 import { Flex, Grid } from 'styled-system/jsx';
-import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, QrCode } from 'lucide-react';
 import { PageHeader } from '../../design-system/PageHeader';
 import { Card } from '../../design-system/Card';
 import { Badge } from '../../design-system/Badge';
@@ -62,7 +62,11 @@ export function MeetingDetailPage() {
         title={meeting.title}
         description={[formatDateTime(meeting.startsAt), meeting.location].filter(Boolean).join(' · ')}
         actions={
-          !canManage && (
+          canManage ? (
+            <Button onClick={() => navigate(`/check-in-modo/meeting/${meeting.id}`)}>
+              <QrCode size={16} /> Modo check-in
+            </Button>
+          ) : (
             <Button onClick={() => checkIn.mutate()} loading={checkIn.isPending}>
               <CheckCircle2 size={16} /> Confirmar minha presença
             </Button>
