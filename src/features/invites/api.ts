@@ -19,7 +19,8 @@ export const invitesApi = {
   accept: (code: string, input: AcceptInviteInput) =>
     http.post<AuthTokenResponse>(`/invites/public/${code}/accept`, input).then((r) => r.data),
   list: () => http.get<Invite[]>('/invites').then((r) => r.data),
-  create: (input: { chapterId?: string; roleIdOnAccept?: string; membershipStageIdOnAccept?: string; expiresInDays?: number }) =>
+  create: (input: { email?: string; chapterId?: string; roleIdOnAccept?: string; membershipStageIdOnAccept?: string; expiresInDays?: number }) =>
     http.post<Invite>('/invites', input).then((r) => r.data),
+  resend: (id: string) => http.post<{ sent: boolean }>(`/invites/${id}/resend`).then((r) => r.data),
   revoke: (id: string) => http.delete(`/invites/${id}`).then((r) => r.data),
 };
