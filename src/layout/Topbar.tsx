@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { css } from 'styled-system/css';
 import { Flex } from 'styled-system/jsx';
-import { ChevronDown, LogOut, Moon, Sun, User as UserIcon, Building2, Plus } from 'lucide-react';
+import { ChevronDown, LogOut, Monitor, Moon, Sun, User as UserIcon, Building2, Plus } from 'lucide-react';
 import { useCurrentClub } from '../features/clubs/hooks';
 import { useMyClubs, useLogout, useCurrentUser } from '../features/auth/hooks';
 import { useClubStore } from '../stores/club.store';
@@ -28,7 +28,7 @@ export function Topbar() {
   const user = useCurrentUser();
   const logout = useLogout();
   const setCurrentClubId = useClubStore((s) => s.setCurrentClubId);
-  const { theme, toggle } = useThemeStore();
+  const { preference, cycle } = useThemeStore();
   const navigate = useNavigate();
 
   const [clubMenuOpen, setClubMenuOpen] = useState(false);
@@ -138,11 +138,12 @@ export function Topbar() {
 
       <Flex align="center" gap="1">
         <button
-          aria-label="Alternar tema"
-          onClick={toggle}
+          aria-label={`Tema: ${preference === 'system' ? 'automático' : preference === 'dark' ? 'escuro' : 'claro'}. Clique para alternar.`}
+          title={`Tema: ${preference === 'system' ? 'automático (sistema)' : preference === 'dark' ? 'escuro' : 'claro'}`}
+          onClick={cycle}
           className={css({ p: '2', borderRadius: 'md', cursor: 'pointer', color: 'text.muted', _hover: { bg: 'surface.elevated', color: 'text' } })}
         >
-          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          {preference === 'system' ? <Monitor size={18} /> : preference === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
         </button>
 
         <div ref={userMenuRef} className={css({ position: 'relative' })}>
