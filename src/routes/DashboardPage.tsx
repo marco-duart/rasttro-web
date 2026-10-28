@@ -14,6 +14,7 @@ import { useEvents } from '../features/events/hooks';
 import { useCurrentPermissions, useCurrentClub } from '../features/clubs/hooks';
 import { PERMISSIONS } from '../lib/permissions';
 import { formatCentsToBRL, formatDateTime } from '../lib/format';
+import { NovidadesBlock } from '../features/novidades/NovidadesBlock';
 
 export function DashboardPage() {
   const navigate = useNavigate();
@@ -128,6 +129,8 @@ export function DashboardPage() {
           )}
         </Card>
       </Grid>
+
+      <NovidadesBlock />
     </div>
   );
 }

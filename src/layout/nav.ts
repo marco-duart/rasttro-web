@@ -20,6 +20,7 @@ import {
   IdCard,
   Mail,
   MailCheck,
+  Sparkles,
 } from 'lucide-react';
 import { PERMISSIONS } from '../lib/permissions';
 
@@ -39,7 +40,10 @@ export interface NavGroup {
 export const NAV_GROUPS: NavGroup[] = [
   {
     label: null,
-    items: [{ label: 'Visão geral', to: '/', icon: LayoutDashboard }],
+    items: [
+      { label: 'Visão geral', to: '/', icon: LayoutDashboard },
+      { label: 'Novidades', to: '/novidades', icon: Sparkles },
+    ],
   },
   {
     label: 'Pessoas',

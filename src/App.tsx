@@ -39,6 +39,7 @@ import { AnnouncementsPage } from './routes/announcements/AnnouncementsPage';
 import { MembershipCardPage } from './routes/membership-card/MembershipCardPage';
 import { SettingsPage } from './routes/settings/SettingsPage';
 import { AuditPage } from './routes/audit/AuditPage';
+import { NovidadesPage } from './routes/novidades/NovidadesPage';
 import { NotFoundPage } from './routes/NotFoundPage';
 
 function App() {
@@ -84,6 +85,7 @@ function App() {
               <Route path="/carteirinha" element={<MembershipCardPage />} />
               <Route path="/configuracoes" element={<SettingsPage />} />
               <Route path="/auditoria" element={<AuditPage />} />
+              <Route path="/novidades" element={<NovidadesPage />} />
             </Route>
           </Route>
         </Route>
