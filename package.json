@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && panda codegen && vite build",
     "lint": "eslint .",
+    "test": "node --test \"src/**/*.test.ts\"",
     "preview": "vite preview",
     "panda:codegen": "panda codegen",
     "api:generate": "cp ../rasttro-server/openapi.json ./openapi.json && kubb generate"
