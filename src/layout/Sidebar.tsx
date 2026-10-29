@@ -6,6 +6,15 @@ import { NAV_GROUPS } from './nav';
 import { useAuthStore } from '../stores/auth.store';
 import { useCurrentPermissions } from '../features/clubs/hooks';
 
+const MENU_PATHS = NAV_GROUPS.flatMap((group) => group.items.map((item) => item.to));
+
+/**
+ * Item cuja rota é prefixo de outro item do menu ("/" e "/financeiro"): só fica marcado na rota exata.
+ * Sem isso, "Visão geral" do Financeiro acendia junto com Mensalidades, Caixa e Categorias.
+ * Os demais (ex.: "/membros", que tem a ficha em "/membros/:id") seguem marcados nas páginas internas.
+ */
+const isMenuParent = (to: string) => to === '/' || MENU_PATHS.some((other) => other !== to && other.startsWith(`${to}/`));
+
 const linkClass = css({
   display: 'flex',
   alignItems: 'center',
@@ -66,7 +75,7 @@ export function Sidebar() {
                   <NavLink
                     key={item.to}
                     to={item.to}
-                    end={item.to === '/'}
+                    end={isMenuParent(item.to)}
                     className={({ isActive }) => cx(linkClass, isActive && activeLinkClass)}
                   >
                     <item.icon size={18} strokeWidth={2} />
