@@ -87,7 +87,7 @@ export function Topbar() {
               zIndex: 20,
             })}
           >
-            {myClubs?.map(({ club: c }) => (
+            {myClubs?.filter(({ member }) => member.status === 'ACTIVE').map(({ club: c }) => (
               <button
                 key={c.id}
                 onClick={() => {

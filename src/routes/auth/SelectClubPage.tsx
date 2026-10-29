@@ -43,6 +43,7 @@ export function SelectClubPage() {
             <button
               key={club.id}
               onClick={() => choose(club.id)}
+              disabled={member.status !== 'ACTIVE'}
               className={css({
                 display: 'flex',
                 alignItems: 'center',
@@ -55,6 +56,7 @@ export function SelectClubPage() {
                 textAlign: 'left',
                 cursor: 'pointer',
                 _hover: { borderColor: 'brand' },
+                _disabled: { opacity: 0.55, cursor: 'not-allowed', _hover: { borderColor: 'border' } },
               })}
             >
               <Avatar name={club.name} photoUrl={club.logoUrl} />
@@ -65,8 +67,9 @@ export function SelectClubPage() {
                   {member.chapter ? ` · ${member.chapter.name}` : ''}
                 </p>
               </div>
-              {club.subscription?.status === 'TRIALING' && <Badge tone="brand">Trial</Badge>}
-              {club.subscription?.status === 'PAST_DUE' && <Badge tone="danger">Pendente</Badge>}
+              {member.status !== 'ACTIVE' && <Badge tone="danger">Acesso encerrado</Badge>}
+              {member.status === 'ACTIVE' && club.subscription?.status === 'TRIALING' && <Badge tone="brand">Trial</Badge>}
+              {member.status === 'ACTIVE' && club.subscription?.status === 'PAST_DUE' && <Badge tone="danger">Pendente</Badge>}
               <ChevronRight size={18} color="var(--colors-text-muted)" />
             </button>
           ))}

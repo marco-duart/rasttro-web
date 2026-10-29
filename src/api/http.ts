@@ -61,6 +61,18 @@ http.interceptors.response.use(
       }
     }
 
+    // Membro desligado (ou inativo/suspenso) no meio da sessão: sai do clube e volta para a escolha de clube,
+    // onde ele aparece como "Acesso encerrado".
+    if (
+      error.response?.status === 403 &&
+      (error.response.data as { code?: string } | undefined)?.code === 'MEMBER_INACTIVE' &&
+      typeof window !== 'undefined' &&
+      window.location.pathname !== '/selecionar-clube'
+    ) {
+      useClubStore.getState().setCurrentClubId(null);
+      window.location.href = '/selecionar-clube';
+    }
+
     return Promise.reject(error);
   },
 );
