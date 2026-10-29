@@ -8,6 +8,7 @@ import { Input } from '../../design-system/Input';
 import { Button } from '../../design-system/Button';
 import { usePermissionCatalog, useCreateRole, useUpdateRole } from '../../features/roles/hooks';
 import type { Role, PermissionScope } from '../../api/types';
+import { permissionGroup, permissionInfo, permissionLabel } from '../../lib/permissionLabels';
 
 interface RoleFormDialogProps {
   open: boolean;
@@ -88,15 +89,20 @@ export function RoleFormDialog({ open, onClose, role }: RoleFormDialogProps) {
           <div className={css({ maxH: '360px', overflowY: 'auto', border: '1px solid', borderColor: 'border', borderRadius: 'md', p: '3' })}>
             {Array.from(groups.entries()).map(([mod, perms]) => (
               <div key={mod} className={css({ mb: '3' })}>
-                <p className={css({ textStyle: 'caption', color: 'brand', textTransform: 'uppercase', mb: '1.5' })}>{mod}</p>
+                <p className={css({ textStyle: 'caption', color: 'brand', textTransform: 'uppercase', mb: '1.5' })}>{permissionGroup(mod)}</p>
                 <Flex direction="column" gap="1.5">
                   {perms.map((permission) => {
                     const scope = selected.get(permission);
                     return (
                       <Flex key={permission} align="center" justify="space-between" gap="2">
-                        <label className={css({ display: 'flex', alignItems: 'center', gap: '2', fontSize: '13px', cursor: 'pointer' })}>
-                          <input type="checkbox" checked={Boolean(scope)} onChange={(e) => toggle(permission, e.target.checked)} />
-                          {permission}
+                        <label className={css({ display: 'flex', alignItems: 'flex-start', gap: '2', fontSize: '13px', cursor: 'pointer' })}>
+                          <input type="checkbox" checked={Boolean(scope)} onChange={(e) => toggle(permission, e.target.checked)} className={css({ mt: '1' })} />
+                          <span>
+                            {permissionLabel(permission)}
+                            {permissionInfo[permission] && (
+                              <span className={css({ display: 'block', textStyle: 'caption', color: 'text.muted' })}>{permissionInfo[permission].description}</span>
+                            )}
+                          </span>
                         </label>
                         {scope && (
                           <select
