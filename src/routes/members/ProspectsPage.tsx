@@ -10,6 +10,7 @@ import { EmptyState } from '../../design-system/EmptyState';
 import { useMembershipStages } from '../../features/membership-stages/hooks';
 import { useMembers } from '../../features/members/hooks';
 import type { MembershipStage } from '../../api/types';
+import { formatDate } from '../../lib/format';
 
 function ProspectColumn({ stage }: { stage: MembershipStage }) {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ function ProspectColumn({ stage }: { stage: MembershipStage }) {
                 <Avatar name={member.fullName} photoUrl={member.photoUrl} size={28} />
                 <div className={css({ minW: 0 })}>
                   <p className={css({ fontWeight: '600', fontSize: '14px', truncate: true })}>{member.fullName}</p>
-                  <p className={css({ textStyle: 'caption', color: 'text.muted' })}>desde {new Date(member.joinedAt ?? '').toLocaleDateString('pt-BR')}</p>
+                  <p className={css({ textStyle: 'caption', color: 'text.muted' })}>desde {formatDate(member.joinedAt)}</p>
                 </div>
               </Flex>
             </Card>
