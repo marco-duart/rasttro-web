@@ -14,6 +14,7 @@ import { EmailPreferencesPage } from './routes/auth/EmailPreferencesPage';
 import { InvitesPage } from './routes/invites/InvitesPage';
 import { AcceptInvitePage } from './routes/auth/AcceptInvitePage';
 import { PrivacyPolicyPage } from './routes/legal/PrivacyPolicyPage';
+import { ChildSafetyPage } from './routes/legal/ChildSafetyPage';
 import { RequireAuth } from './routes/RequireAuth';
 import { RequireClub } from './routes/RequireClub';
 import { AppShell } from './layout/AppShell';
@@ -54,6 +55,7 @@ function App() {
         <Route path="/criar-clube" element={<SignupClubPage />} />
         <Route path="/convite/:code" element={<AcceptInvitePage />} />
         <Route path="/privacidade" element={<PrivacyPolicyPage />} />
+        <Route path="/seguranca-infantil" element={<ChildSafetyPage />} />
 
         <Route element={<RequireAuth />}>
           <Route path="/selecionar-clube" element={<SelectClubPage />} />
