@@ -13,6 +13,7 @@ import { EmergencySheetPage } from './routes/convoys/EmergencySheetPage';
 import { EmailPreferencesPage } from './routes/auth/EmailPreferencesPage';
 import { InvitesPage } from './routes/invites/InvitesPage';
 import { AcceptInvitePage } from './routes/auth/AcceptInvitePage';
+import { PrivacyPolicyPage } from './routes/legal/PrivacyPolicyPage';
 import { RequireAuth } from './routes/RequireAuth';
 import { RequireClub } from './routes/RequireClub';
 import { AppShell } from './layout/AppShell';
@@ -52,6 +53,7 @@ function App() {
         <Route path="/preferencias-email" element={<EmailPreferencesPage />} />
         <Route path="/criar-clube" element={<SignupClubPage />} />
         <Route path="/convite/:code" element={<AcceptInvitePage />} />
+        <Route path="/privacidade" element={<PrivacyPolicyPage />} />
 
         <Route element={<RequireAuth />}>
           <Route path="/selecionar-clube" element={<SelectClubPage />} />

@@ -56,6 +56,11 @@ export function LoginPage() {
           Criar meu motoclube
         </Link>
       </p>
+      <p className={css({ textStyle: 'caption', mt: '3', textAlign: 'center' })}>
+        <Link to="/privacidade" className={css({ color: 'text.muted', _hover: { color: 'brand' } })}>
+          Política de Privacidade
+        </Link>
+      </p>
     </AuthLayout>
   );
 }
