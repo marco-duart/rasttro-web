@@ -17,14 +17,7 @@ import { invitesApi } from '../../features/invites/api';
 import { toast } from '../../stores/toast.store';
 import { apiErrorMessage } from '../../lib/errors';
 import { formatDate } from '../../lib/format';
-import type { InviteStatus } from '../../api/types';
-
-const STATUS: Record<InviteStatus, { label: string; tone: 'success' | 'warning' | 'neutral' | 'danger' | 'brand' }> = {
-  PENDING: { label: 'Pendente', tone: 'brand' },
-  ACCEPTED: { label: 'Aceito', tone: 'success' },
-  EXPIRED: { label: 'Expirado', tone: 'neutral' },
-  REVOKED: { label: 'Revogado', tone: 'danger' },
-};
+import { inviteStatusLabel, inviteStatusTone } from '../../lib/labels';
 
 export function InvitesPage() {
   const queryClient = useQueryClient();
@@ -81,7 +74,7 @@ export function InvitesPage() {
                 <div>
                   <Flex align="center" gap="2">
                     <span className={css({ fontWeight: '700', letterSpacing: '0.08em' })}>{invite.code}</span>
-                    <Badge tone={STATUS[invite.status].tone}>{STATUS[invite.status].label}</Badge>
+                    <Badge tone={inviteStatusTone[invite.status]}>{inviteStatusLabel[invite.status]}</Badge>
                   </Flex>
                   <p className={css({ textStyle: 'caption', color: 'text.muted', mt: '1' })}>
                     {invite.email ?? 'Sem e-mail (link)'} · válido até {formatDate(invite.expiresAt)}

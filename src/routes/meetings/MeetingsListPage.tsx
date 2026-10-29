@@ -14,14 +14,7 @@ import { useCurrentPermissions } from '../../features/clubs/hooks';
 import { PERMISSIONS } from '../../lib/permissions';
 import { formatDateTime } from '../../lib/format';
 import { MeetingFormDialog } from './MeetingFormDialog';
-import type { MeetingStatus } from '../../api/types';
-
-const statusTone: Record<MeetingStatus, 'success' | 'neutral' | 'warning' | 'danger' | 'brand'> = {
-  SCHEDULED: 'neutral',
-  IN_PROGRESS: 'brand',
-  COMPLETED: 'success',
-  CANCELLED: 'danger',
-};
+import { meetingStatusLabel, meetingStatusTone } from '../../lib/labels';
 
 export function MeetingsListPage() {
   const navigate = useNavigate();
@@ -56,7 +49,7 @@ export function MeetingsListPage() {
                   <Flex align="center" gap="2">
                     <p className={css({ fontWeight: '700' })}>{meeting.title}</p>
                     {meeting.mandatory && <Badge tone="warning">Obrigatória</Badge>}
-                    <Badge tone={statusTone[meeting.status] ?? 'neutral'}>{meeting.status}</Badge>
+                    <Badge tone={meetingStatusTone[meeting.status] ?? 'neutral'}>{meetingStatusLabel[meeting.status] ?? meeting.status}</Badge>
                   </Flex>
                   <Flex gap="4" mt="1" className={css({ color: 'text.muted', fontSize: '13px' })}>
                     <span>{formatDateTime(meeting.startsAt)}</span>

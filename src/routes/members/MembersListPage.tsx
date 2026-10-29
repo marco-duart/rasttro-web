@@ -20,20 +20,7 @@ import { useCurrentPermissions } from '../../features/clubs/hooks';
 import { PERMISSIONS } from '../../lib/permissions';
 import { MemberFormDialog } from './MemberFormDialog';
 import type { MemberStatus } from '../../api/types';
-
-const statusLabel: Record<MemberStatus, string> = {
-  ACTIVE: 'Ativo',
-  INACTIVE: 'Inativo',
-  SUSPENDED: 'Suspenso',
-  LEFT: 'Desligado',
-};
-
-const statusTone: Record<MemberStatus, 'success' | 'neutral' | 'warning' | 'danger'> = {
-  ACTIVE: 'success',
-  INACTIVE: 'neutral',
-  SUSPENDED: 'warning',
-  LEFT: 'danger',
-};
+import { memberStatusLabel, memberStatusTone } from '../../lib/labels';
 
 export function MembersListPage() {
   const navigate = useNavigate();
@@ -87,7 +74,7 @@ export function MembersListPage() {
           <div className={css({ flex: '1', minW: '160px' })}>
             <Select value={status} onChange={(e) => { setStatus(e.target.value as MemberStatus | ''); setPage(1); }}>
               <option value="">Todos os status</option>
-              {Object.entries(statusLabel).map(([value, label]) => (
+              {Object.entries(memberStatusLabel).map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}
                 </option>
@@ -157,7 +144,7 @@ export function MembersListPage() {
                   </td>
                   <td className={css({ p: '3', fontSize: '14px', color: 'text.muted' })}>{member.chapter?.name ?? '—'}</td>
                   <td className={css({ p: '3' })}>
-                    <Badge tone={statusTone[member.status]}>{statusLabel[member.status]}</Badge>
+                    <Badge tone={memberStatusTone[member.status]}>{memberStatusLabel[member.status]}</Badge>
                   </td>
                 </tr>
               ))}

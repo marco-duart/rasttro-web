@@ -17,22 +17,7 @@ import { useCurrentPermissions } from '../../features/clubs/hooks';
 import { PERMISSIONS } from '../../lib/permissions';
 import { formatDateTime } from '../../lib/format';
 import type { AttendanceStatus } from '../../api/types';
-
-const attendanceLabel: Record<AttendanceStatus, string> = {
-  EXPECTED: 'Aguardando',
-  CONFIRMED: 'Confirmado',
-  PRESENT: 'Presente',
-  ABSENT: 'Ausente',
-  JUSTIFIED_ABSENCE: 'Falta justificada',
-};
-
-const attendanceTone: Record<AttendanceStatus, 'neutral' | 'success' | 'warning' | 'danger'> = {
-  EXPECTED: 'neutral',
-  CONFIRMED: 'neutral',
-  PRESENT: 'success',
-  ABSENT: 'danger',
-  JUSTIFIED_ABSENCE: 'warning',
-};
+import { attendanceLabel, attendanceTone } from '../../lib/labels';
 
 export function MeetingDetailPage() {
   const { id = '' } = useParams();

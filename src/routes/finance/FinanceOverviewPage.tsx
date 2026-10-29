@@ -10,6 +10,7 @@ import { useFinanceSummary, useGenerateMonth } from '../../features/finance/hook
 import { useCurrentPermissions } from '../../features/clubs/hooks';
 import { PERMISSIONS } from '../../lib/permissions';
 import { formatCentsToBRL } from '../../lib/format';
+import { chargeStatusLabel } from '../../lib/labels';
 
 export function FinanceOverviewPage() {
   const { data: summary, isLoading } = useFinanceSummary();
@@ -54,7 +55,7 @@ export function FinanceOverviewPage() {
         <Flex gap="6" wrap="wrap">
           {summary.charges.map((c) => (
             <div key={c.status}>
-              <p className={css({ textStyle: 'caption', color: 'text.muted' })}>{c.status}</p>
+              <p className={css({ textStyle: 'caption', color: 'text.muted' })}>{chargeStatusLabel[c.status]}</p>
               <p className={css({ fontWeight: '700' })}>{c.count}</p>
               <p className={css({ textStyle: 'bodySm', color: 'text.muted' })}>{formatCentsToBRL(c.amountCents)}</p>
             </div>

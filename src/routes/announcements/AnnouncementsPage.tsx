@@ -19,21 +19,7 @@ import { useCurrentPermissions } from '../../features/clubs/hooks';
 import { PERMISSIONS } from '../../lib/permissions';
 import { formatDateTime } from '../../lib/format';
 import type { AnnouncementAudience, AnnouncementPriority } from '../../api/types';
-
-const audienceLabel: Record<AnnouncementAudience, string> = {
-  GENERAL: 'Geral',
-  BOARD: 'Diretoria',
-  REGIONAL: 'Regional',
-  PROSPECTS: 'Prospects',
-  EVENT_PARTICIPANTS: 'Participantes de evento',
-};
-
-const priorityTone: Record<AnnouncementPriority, 'neutral' | 'brand' | 'warning' | 'danger'> = {
-  LOW: 'neutral',
-  NORMAL: 'brand',
-  HIGH: 'warning',
-  URGENT: 'danger',
-};
+import { announcementAudienceLabel, announcementPriorityLabel, announcementPriorityTone } from '../../lib/labels';
 
 interface FormValues {
   title: string;
@@ -78,8 +64,8 @@ export function AnnouncementsPage() {
                 <div>
                   <Flex align="center" gap="2">
                     <p className={css({ fontWeight: '700' })}>{a.title}</p>
-                    <Badge tone={priorityTone[a.priority]}>{a.priority}</Badge>
-                    <Badge tone="neutral">{audienceLabel[a.audience]}</Badge>
+                    <Badge tone={announcementPriorityTone[a.priority]}>{announcementPriorityLabel[a.priority]}</Badge>
+                    <Badge tone="neutral">{announcementAudienceLabel[a.audience]}</Badge>
                   </Flex>
                   <p className={css({ textStyle: 'bodySm', color: 'text.muted', mt: '1', whiteSpace: 'pre-wrap' })}>{a.body}</p>
                   <p className={css({ textStyle: 'caption', color: 'text.muted', mt: '2' })}>
@@ -111,7 +97,7 @@ export function AnnouncementsPage() {
           <Flex gap="4">
             <Field label="Audiência">
               <Select {...register('audience')}>
-                {Object.entries(audienceLabel).map(([value, label]) => (
+                {Object.entries(announcementAudienceLabel).map(([value, label]) => (
                   <option key={value} value={value}>
                     {label}
                   </option>
@@ -122,7 +108,7 @@ export function AnnouncementsPage() {
               <Select {...register('priority')}>
                 {(['LOW', 'NORMAL', 'HIGH', 'URGENT'] as AnnouncementPriority[]).map((p) => (
                   <option key={p} value={p}>
-                    {p}
+                    {announcementPriorityLabel[p]}
                   </option>
                 ))}
               </Select>

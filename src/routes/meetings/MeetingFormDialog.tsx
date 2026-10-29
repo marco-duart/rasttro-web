@@ -9,6 +9,7 @@ import { Textarea } from '../../design-system/Textarea';
 import { Button } from '../../design-system/Button';
 import { useCreateMeeting } from '../../features/meetings/hooks';
 import type { MeetingType } from '../../api/types';
+import { meetingTypeLabel } from '../../lib/labels';
 
 interface FormValues {
   title: string;
@@ -18,13 +19,6 @@ interface FormValues {
   agenda?: string;
   mandatory: boolean;
 }
-
-const typeLabel: Record<MeetingType, string> = {
-  ORDINARY: 'Reunião ordinária',
-  EXTRAORDINARY: 'Reunião extraordinária',
-  ASSEMBLY: 'Assembleia',
-  BOARD: 'Reunião de diretoria',
-};
 
 export function MeetingFormDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const create = useCreateMeeting();
@@ -46,7 +40,7 @@ export function MeetingFormDialog({ open, onClose }: { open: boolean; onClose: (
         <Grid columns={2} gap="4">
           <Field label="Tipo">
             <Select {...register('type')}>
-              {Object.entries(typeLabel).map(([value, label]) => (
+              {Object.entries(meetingTypeLabel).map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}
                 </option>

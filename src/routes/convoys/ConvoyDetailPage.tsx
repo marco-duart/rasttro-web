@@ -24,13 +24,7 @@ import { useCurrentPermissions } from '../../features/clubs/hooks';
 import { PERMISSIONS } from '../../lib/permissions';
 import { formatDateTime } from '../../lib/format';
 import type { ConvoyRole } from '../../api/types';
-
-const roleLabel: Record<ConvoyRole, string> = {
-  CAPTAIN: 'Capitão de estrada',
-  REAR_GUARD: 'Ferrolho',
-  ASSISTANT: 'Assistente',
-  ROAD_SUPPORT: 'Apoio de estrada',
-};
+import { convoyParticipantStatusLabel, convoyParticipantStatusTone, convoyRoleLabel } from '../../lib/labels';
 
 export function ConvoyDetailPage() {
   const { id = '' } = useParams();
@@ -105,7 +99,7 @@ export function ConvoyDetailPage() {
                   <Flex align="center" gap="2">
                     <Shield size={14} color="var(--colors-brand)" />
                     <span className={css({ fontSize: '14px' })}>
-                      {roleLabel[a.role]}: {a.member.fullName}
+                      {convoyRoleLabel[a.role]}: {a.member.fullName}
                     </span>
                   </Flex>
                   {canManage && (
@@ -130,7 +124,7 @@ export function ConvoyDetailPage() {
                 ))}
               </Select>
               <Select value={roleValue} onChange={(e) => setRoleValue(e.target.value as ConvoyRole)} className={css({ flex: 1, minW: '140px' })}>
-                {Object.entries(roleLabel).map(([value, label]) => (
+                {Object.entries(convoyRoleLabel).map(([value, label]) => (
                   <option key={value} value={value}>
                     {label}
                   </option>
@@ -178,9 +172,7 @@ export function ConvoyDetailPage() {
                     )}
                   </div>
                 </Flex>
-                <Badge tone={p.status === 'ARRIVED' || p.status === 'CHECKED_IN' ? 'success' : p.status === 'NO_SHOW' ? 'danger' : 'neutral'}>
-                  {p.status}
-                </Badge>
+                <Badge tone={convoyParticipantStatusTone[p.status]}>{convoyParticipantStatusLabel[p.status]}</Badge>
               </Flex>
             ))}
             {!convoy.participants?.length && <p className={css({ textStyle: 'bodySm', color: 'text.muted' })}>Ninguém confirmou ainda.</p>}

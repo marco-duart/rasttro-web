@@ -20,10 +20,8 @@ import { useMemberTitles, useTitles, useAwardTitle, useRevokeTitle } from '../..
 import { useCurrentPermissions } from '../../features/clubs/hooks';
 import { PERMISSIONS } from '../../lib/permissions';
 import { formatCentsToBRL, formatDate } from '../../lib/format';
-import type { MemberStatus } from '../../api/types';
+import { chargeStatusLabel, chargeStatusTone, memberStatusLabel, memberStatusTone } from '../../lib/labels';
 
-const statusLabel: Record<MemberStatus, string> = { ACTIVE: 'Ativo', INACTIVE: 'Inativo', SUSPENDED: 'Suspenso', LEFT: 'Desligado' };
-const statusTone: Record<MemberStatus, 'success' | 'neutral' | 'warning' | 'danger'> = { ACTIVE: 'success', INACTIVE: 'neutral', SUSPENDED: 'warning', LEFT: 'danger' };
 
 export function MemberDetailPage() {
   const { id = '' } = useParams();
@@ -85,7 +83,7 @@ export function MemberDetailPage() {
             <Flex align="center" gap="2" wrap="wrap">
               <h1 className={css({ textStyle: 'h2' })}>{member.fullName}</h1>
               {member.nickname && <span className={css({ color: 'text.muted' })}>"{member.nickname}"</span>}
-              <Badge tone={statusTone[member.status]}>{statusLabel[member.status]}</Badge>
+              <Badge tone={memberStatusTone[member.status]}>{memberStatusLabel[member.status]}</Badge>
               {member.isFounder && <Badge tone="brand">Fundador</Badge>}
               {member.displayTitle && (
                 <Badge tone="warning">
@@ -230,7 +228,7 @@ export function MemberDetailPage() {
                     <Flex key={c.id} justify="space-between" fontSize="14px">
                       <span>{formatDate(c.referenceMonth)}</span>
                       <span>{formatCentsToBRL(c.amountCents)}</span>
-                      <Badge tone={c.status === 'PAID' ? 'success' : c.status === 'OVERDUE' ? 'danger' : 'neutral'}>{c.status}</Badge>
+                      <Badge tone={chargeStatusTone[c.status]}>{chargeStatusLabel[c.status]}</Badge>
                     </Flex>
                   ))}
                 </Flex>

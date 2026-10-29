@@ -20,9 +20,8 @@ import { useCurrentPermissions } from '../../features/clubs/hooks';
 import { PERMISSIONS } from '../../lib/permissions';
 import { formatCentsToBRL, formatMonth, formatDate } from '../../lib/format';
 import type { ChargeStatus, PaymentMethod } from '../../api/types';
+import { chargeStatusLabel, chargeStatusTone } from '../../lib/labels';
 
-const statusLabel: Record<ChargeStatus, string> = { PENDING: 'Pendente', PAID: 'Pago', OVERDUE: 'Vencido', WAIVED: 'Isento', CANCELLED: 'Cancelado' };
-const statusTone: Record<ChargeStatus, 'neutral' | 'success' | 'danger' | 'warning'> = { PENDING: 'neutral', PAID: 'success', OVERDUE: 'danger', WAIVED: 'warning', CANCELLED: 'neutral' };
 
 interface FeeRuleForm {
   amountReais: string;
@@ -62,7 +61,7 @@ export function ChargesPage() {
       <Flex gap="3" mb="4">
         <Select value={status} onChange={(e) => { setStatus(e.target.value as ChargeStatus | ''); setPage(1); }} className={css({ maxW: '220px' })}>
           <option value="">Todos os status</option>
-          {Object.entries(statusLabel).map(([value, label]) => (
+          {Object.entries(chargeStatusLabel).map(([value, label]) => (
             <option key={value} value={value}>
               {label}
             </option>
@@ -95,11 +94,11 @@ export function ChargesPage() {
                       <span className={css({ fontSize: '14px' })}>{charge.member?.fullName}</span>
                     </Flex>
                   </td>
-                  <td className={css({ p: '3', fontSize: '14px', color: 'text.muted', textTransform: 'capitalize' })}>{formatMonth(charge.referenceMonth)}</td>
+                  <td className={css({ p: '3', fontSize: '14px', color: 'text.muted' })}>{formatMonth(charge.referenceMonth)}</td>
                   <td className={css({ p: '3', fontSize: '14px' })}>{formatCentsToBRL(charge.amountCents)}</td>
                   <td className={css({ p: '3', fontSize: '14px', color: 'text.muted' })}>{formatDate(charge.dueDate)}</td>
                   <td className={css({ p: '3' })}>
-                    <Badge tone={statusTone[charge.status]}>{statusLabel[charge.status]}</Badge>
+                    <Badge tone={chargeStatusTone[charge.status]}>{chargeStatusLabel[charge.status]}</Badge>
                   </td>
                   <td className={css({ p: '3', fontSize: '13px', color: 'text.muted' })}>
                     {charge.lastReminderAt ? formatDate(charge.lastReminderAt) : '—'}

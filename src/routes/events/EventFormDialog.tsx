@@ -8,7 +8,7 @@ import { Select } from '../../design-system/Select';
 import { Textarea } from '../../design-system/Textarea';
 import { Button } from '../../design-system/Button';
 import { useCreateEvent } from '../../features/events/hooks';
-import { eventTypeLabel } from '../../features/events/constants';
+import { eventTypeLabel } from '../../lib/labels';
 import type { EventType } from '../../api/types';
 
 interface FormValues {

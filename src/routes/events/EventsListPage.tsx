@@ -14,7 +14,7 @@ import { useCurrentPermissions } from '../../features/clubs/hooks';
 import { PERMISSIONS } from '../../lib/permissions';
 import { formatDateTime } from '../../lib/format';
 import { EventFormDialog } from './EventFormDialog';
-import { eventTypeLabel } from '../../features/events/constants';
+import { eventTypeLabel } from '../../lib/labels';
 
 export function EventsListPage() {
   const navigate = useNavigate();

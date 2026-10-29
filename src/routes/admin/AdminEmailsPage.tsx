@@ -15,8 +15,8 @@ import { http } from '../../api/http';
 import { formatDateTime } from '../../lib/format';
 import { toast } from '../../stores/toast.store';
 import type { Paginated } from '../../api/types';
+import { emailStatusLabel, emailStatusTone, type EmailStatus } from '../../lib/labels';
 
-type EmailStatus = 'PENDING' | 'SENDING' | 'SENT' | 'FAILED' | 'CANCELLED' | 'SUPPRESSED';
 
 interface EmailRow {
   id: string;
@@ -30,15 +30,6 @@ interface EmailRow {
   sentAt: string | null;
   deliveredAt: string | null;
 }
-
-const TONE: Record<EmailStatus, 'success' | 'warning' | 'danger' | 'neutral' | 'brand'> = {
-  PENDING: 'brand',
-  SENDING: 'brand',
-  SENT: 'success',
-  FAILED: 'danger',
-  CANCELLED: 'neutral',
-  SUPPRESSED: 'warning',
-};
 
 export function AdminEmailsPage() {
   const queryClient = useQueryClient();
@@ -67,8 +58,8 @@ export function AdminEmailsPage() {
       <Flex mb="4" gap="3">
         <Select value={status} onChange={(event) => { setStatus(event.target.value as EmailStatus | ''); setPage(1); }} className={css({ maxW: '220px' })}>
           <option value="">Todos os status</option>
-          {(Object.keys(TONE) as EmailStatus[]).map((s) => (
-            <option key={s} value={s}>{s}</option>
+          {(Object.keys(emailStatusLabel) as EmailStatus[]).map((s) => (
+            <option key={s} value={s}>{emailStatusLabel[s]}</option>
           ))}
         </Select>
       </Flex>
@@ -93,7 +84,7 @@ export function AdminEmailsPage() {
                   <td className={css({ p: '3', fontSize: '14px' })}>{row.toEmail}</td>
                   <td className={css({ p: '3', fontSize: '13px' })}>{row.templateKey}</td>
                   <td className={css({ p: '3' })} title={row.lastError ?? undefined}>
-                    <Badge tone={TONE[row.status]}>{row.status}</Badge>
+                    <Badge tone={emailStatusTone[row.status]}>{emailStatusLabel[row.status]}</Badge>
                     {row.deliveredAt && <span className={css({ ml: '2', textStyle: 'caption', color: 'success' })}>entregue</span>}
                   </td>
                   <td className={css({ p: '3', fontSize: '13px' })}>{row.attempts}</td>

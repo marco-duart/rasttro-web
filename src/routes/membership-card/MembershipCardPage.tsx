@@ -7,6 +7,7 @@ import { Badge } from '../../design-system/Badge';
 import { Avatar } from '../../design-system/Avatar';
 import { Spinner } from '../../design-system/Spinner';
 import { useMyMembershipCard } from '../../features/membership-card/hooks';
+import { memberStatusLabel } from '../../lib/labels';
 
 export function MembershipCardPage() {
   const { data: card, isLoading } = useMyMembershipCard();
@@ -48,7 +49,7 @@ export function MembershipCardPage() {
           <p className={css({ textStyle: 'caption', color: 'text.muted', mt: '2' })}>Membro nº {card.member.memberNumber ?? '—'}</p>
 
           <img src={card.qrDataUrl} alt="QR code de verificação" className={css({ width: '200px', height: '200px', mx: 'auto', mt: '5', borderRadius: 'md', bg: 'white', p: '2' })} />
-          <p className={css({ textStyle: 'caption', color: 'text.muted', mt: '3' })}>Status: {card.member.status === 'ACTIVE' ? 'Ativo' : card.member.status}</p>
+          <p className={css({ textStyle: 'caption', color: 'text.muted', mt: '3' })}>Status: {memberStatusLabel[card.member.status]}</p>
         </Card>
       </Center>
     </div>

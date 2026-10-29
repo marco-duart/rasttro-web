@@ -12,10 +12,10 @@ import { useEvent, useRsvpEvent } from '../../features/events/hooks';
 import { useCurrentPermissions } from '../../features/clubs/hooks';
 import { PERMISSIONS } from '../../lib/permissions';
 import { formatDateTime } from '../../lib/format';
-import { eventTypeLabel } from '../../features/events/constants';
+import { eventTypeLabel } from '../../lib/labels';
 import type { RsvpStatus } from '../../api/types';
+import { rsvpLabel } from '../../lib/labels';
 
-const rsvpLabel: Record<RsvpStatus, string> = { CONFIRMED: 'Vou', MAYBE: 'Talvez', DECLINED: 'Não vou', NO_RESPONSE: 'Responder' };
 
 export function EventDetailPage() {
   const { id = '' } = useParams();
